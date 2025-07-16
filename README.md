@@ -1,102 +1,85 @@
-# Smart File Processor with Auto-Categorization System
+# Smart File Processor (Auto Categorization System)
 
-[![AWS](https://img.shields.io/badge/AWS-Free%20Tier-orange)](https://aws.amazon.com/free/)
-[![Python](https://img.shields.io/badge/Python-3.8+-blue)](https://python.org)
-[![License](https://img.shields.io/badge/License-MIT-green)](LICENSE)
+![AWS](https://img.shields.io/badge/AWS-Free%20Tier-orange) ![Python](https://img.shields.io/badge/Python-3.8+-blue) ![License](https://img.shields.io/badge/License-MIT-green)
 
-## 🚀 Overview
+## 📌 What is this?
 
-The **Smart File Processor** is an intelligent, automated system that categorizes, processes, and extracts business insights from various file formats using only AWS Glue, S3, and IAM. It's designed to solve the common problem of manually sorting and analyzing business files.
+This project helps you organize and understand your business files automatically. It:
 
-### ✨ Key Features
+* Sorts files into categories like Sales, Finance, HR, etc.
+* Finds useful insights (like total sales, overdue invoices).
+* Works fully on AWS (free tier).
+* No manual work needed after setup.
 
-* **🤖 Automatic File Categorization**: Intelligently sorts files into categories (Financial, Sales, Customer, Inventory, HR, Marketing)
-* **📊 Business Intelligence**: Extracts meaningful insights and KPIs from each file type
-* **🚨 Smart Alerts**: Generates data quality alerts and business warnings
-* **🔀 Data Cleaning**: Automatically cleans and enhances datasets
-* **📈 Comprehensive Reporting**: Creates detailed insights reports with trends and analytics
-* **💰 Cost-Effective**: Runs entirely on AWS Free Tier
-* **⚡ Zero Manual Effort**: Fully automated after setup
+## ✅ Features
 
-## 🏗️ Architecture
+* 📁 **Auto File Sorting**: Puts files into categories.
+* 📊 **Smart Reports**: Shows totals, averages, trends.
+* ⚠️ **Warnings**: Alerts if data is missing or something is wrong.
+* 🧹 **Data Cleaning**: Cleans data and adds timestamps.
+* 📄 **Insight Reports**: Saves results in a separate folder.
+* 💸 **Free to Use**: Works in AWS free tier.
+
+## 🔧 Tools Used
+
+* AWS Glue (for processing)
+* Amazon S3 (for storage)
+* IAM Role (for permissions)
+
+---
+
+## 🧱 System Diagram
 
 ```
-┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐
-│   Input Bucket  │───▶│   AWS Glue Job  │───▶│  Output Bucket  │
-│  (Raw Files)    │    │  (Processing)   │    │ (Categorized)   │
-└─────────────────┘    └─────────────────┘    └─────────────────┘
-│
-▼
-┌─────────────────┐
-│ Insights Bucket │
-│   (Reports)     │
-└─────────────────┘
+Input Bucket (Raw Files) ──▶ Glue Job ──▶ Output Bucket (Sorted)
+                                  │
+                                  ▼
+                        Insights Bucket (Reports)
 ```
 
-## 🎯 Supported File Types
+---
 
-* **CSV Files** (.csv)
-* **JSON Files** (.json)
-* **Parquet Files** (.parquet)
+## 📂 Types of Files It Supports
 
-## 📂 File Categories
+* CSV (.csv)
+* JSON (.json)
+* Parquet (.parquet)
 
-| Category      | Examples                        | Insights Generated                                   |
-| ------------- | ------------------------------- | ---------------------------------------------------- |
-| **Financial** | invoices, receipts, payments    | Revenue totals, average amounts, payment trends      |
-| **Sales**     | orders, transactions, revenue   | Sales volume, product performance, conversion rates  |
-| **Customer**  | contacts, leads, profiles       | Demographics, email domains, geographic distribution |
-| **Inventory** | stock levels, products          | Low stock alerts, inventory turnover, availability   |
-| **HR**        | employees, payroll, departments | Salary analysis, department distribution, headcount  |
-| **Marketing** | campaigns, analytics, leads     | Campaign performance, conversion metrics, ROI        |
+## 📁 Categories
 
-## 🛠️ Prerequisites
+| Category  | File Examples      | It Finds...                     |
+| --------- | ------------------ | ------------------------------- |
+| Financial | invoices, payments | total amount, average, overdue  |
+| Sales     | orders, revenue    | sales count, revenue trends     |
+| Customer  | leads, contacts    | email domains, locations        |
+| Inventory | products, stock    | low stock, out-of-stock alerts  |
+| HR        | employees, salary  | departments, average salary     |
+| Marketing | campaigns, leads   | top campaigns, conversion rates |
 
-* AWS Account with Free Tier access
-* Basic understanding of AWS Console
-* Files in supported formats (CSV, JSON, Parquet)
+---
 
-## 📋 Setup Instructions
+## 🛠️ Setup Guide (Step by Step)
 
-### Step 1: Create S3 Buckets
+### 1. Create 3 S3 Buckets
 
-Create three S3 buckets in your AWS Console:
+* Go to AWS Console → S3 → Create 3 buckets:
 
-```bash
-# Replace [your-unique-suffix] with your chosen suffix
-smart-processor-input-[your-unique-suffix]
-smart-processor-output-[your-unique-suffix]
-smart-processor-insights-[your-unique-suffix]
-```
+  * `smart-processor-input-yourname`
+  * `smart-processor-output-yourname`
+  * `smart-processor-insights-yourname`
 
-**Detailed Steps:**
+### 2. Create IAM Role for Glue
 
-* Navigate to S3 in AWS Console
-* Click Create bucket
-* Enter bucket name (must be globally unique)
-* Choose your preferred region
-* Leave other settings as default
-* Click Create bucket
-* Repeat for all three buckets
+* Go to IAM → Roles → Create Role
+* Choose Glue service
+* Attach policy: `AWSGlueServiceRole`
+* Name it: `SmartProcessorRole`
 
-### Step 2: Create IAM Role
+### 3. Add S3 Access to Role
 
-* Go to IAM → Roles → Create role
-* Select AWS service → Glue
-* Click Next: Permissions
-* Attach the following policies:
-
-  * AWSGlueServiceRole
-* Click Next: Tags (skip)
-* Click Next: Review
-* Role name: `SmartProcessorRole`
-* Click Create role
-
-### Step 3: Add S3 Permissions to IAM Role
-
-* Go to IAM → Roles → `SmartProcessorRole`
-* Click Add permissions → Create inline policy
-* Click **JSON** tab and paste:
+* In IAM → Roles → SmartProcessorRole
+* Click "Add inline policy"
+* Use this JSON:
 
 ```json
 {
@@ -104,12 +87,7 @@ smart-processor-insights-[your-unique-suffix]
   "Statement": [
     {
       "Effect": "Allow",
-      "Action": [
-        "s3:GetObject",
-        "s3:PutObject",
-        "s3:DeleteObject",
-        "s3:ListBucket"
-      ],
+      "Action": ["s3:*"],
       "Resource": [
         "arn:aws:s3:::smart-processor-*",
         "arn:aws:s3:::smart-processor-*/*"
@@ -119,214 +97,145 @@ smart-processor-insights-[your-unique-suffix]
 }
 ```
 
-* Click Review policy
-* Name: `SmartProcessorS3Policy`
-* Click Create policy
-
-### Step 4: Create Glue Job
+### 4. Create the Glue Job
 
 * Go to AWS Glue → Jobs → Create job
-* Select Spark script editor
-* Choose "Upload and edit an existing script"
-* Copy and paste the `data_quality_monitor.py` script
-* **Update the bucket names in the script:**
+* Choose: Spark Script Editor
+* Paste the `data_quality_monitor.py` script
+* Update the 3 bucket names inside the script
+* Job config:
 
-```python
-INPUT_BUCKET = "smart-processor-input-[your-unique-suffix]"
-OUTPUT_BUCKET = "smart-processor-output-[your-unique-suffix]"
-INSIGHTS_BUCKET = "smart-processor-insights-[your-unique-suffix]"
-```
+  * Name: `smart-file-processor`
+  * IAM Role: `SmartProcessorRole`
+  * Language: Python 3
+  * Worker Type: G.1X (Free Tier)
+  * Workers: 2
 
-### Step 5: Configure Job Settings
+### 5. Upload Test Files
 
-**Job Details:**
+* Add `.csv`, `.json` or `.parquet` test files to the input bucket
 
-* Name: `smart-file-processor`
-* IAM Role: `SmartProcessorRole`
-* Glue version: 4.0
-* Language: Python 3
+### 6. Run the Job
 
-**Advanced Properties:**
+* Go to Glue Job → Click Run
+* Check output and insights buckets
 
-* Worker type: G.1X (Free tier eligible)
-* Number of workers: 2
-* Job timeout: 60 minutes
-* Number of retries: 0
+---
 
-### Step 6: Save and Test
+## 🧪 Sample Files
 
-* Click Save
-* Upload test files to your input bucket
-* Click Run to test the job
-
-## 📊 Sample Test Data
-
-Sample files to test the system:
+You can upload test files like:
 
 * `sample_invoice.csv`
 * `sample_customers.csv`
-* `sample_inventory.csv`
 * `sample_sales.csv`
+* `sample_inventory.csv`
 
-*(Include the CSV content as per original)*
+These will be categorized automatically and insights generated.
 
-## 🚀 Usage
+---
 
-### Basic Usage
+## ⚙️ How to Use
 
-1. **Upload Files**: Drop your files into the input bucket
-2. **Run Job**: Execute the Glue job manually or via schedule
-3. **Check Results**: Review organized files and insights
+* 🟢 Drop files into the input bucket
+* ▶️ Run the Glue job manually or set a daily trigger
+* 📁 Check results in output and insights buckets
 
-### Automated Processing
-
-Set up a trigger for automatic processing:
+To automate it:
 
 * Go to AWS Glue → Triggers → Create trigger
-* Name: `daily-file-processor`
-* Type: Schedule
-* Frequency: Daily
-* Start time: 02:00 UTC (adjust for your timezone)
-* Associate with job: `smart-file-processor`
+* Set time and connect to `smart-file-processor`
 
-### Manual Execution
+---
 
-```bash
-# Via AWS CLI
-aws glue start-job-run --job-name smart-file-processor
-```
+## 📂 Output Folder Structure
 
-## 📈 Output Structure
-
-**Output Bucket Structure**
+### Output Bucket:
 
 ```
-smart-processor-output-[suffix]/
-├── financial/
-├── customer/
+smart-processor-output-yourname/
 ├── sales/
+├── financial/
 ├── inventory/
+├── customer/
 ├── hr/
 ├── marketing/
-└── general/
 ```
 
-**Insights Bucket Structure**
+### Insights Bucket:
 
 ```
-smart-processor-insights-[suffix]/
+smart-processor-insights-yourname/
 ├── summary_report/
 ├── category_reports/
-├── daily_insights/
+│   ├── sales/
+│   ├── inventory/
+│   └── ...
 ```
 
-## 📊 Sample Insights Output
+---
 
-*(Include JSON example for Financial, Customer, Inventory as in original)*
+## 💰 Cost (Free Tier)
 
-## 💰 Cost Breakdown (AWS Free Tier)
+| AWS Service | Free Limit       | Our Usage      | Cost   |
+| ----------- | ---------------- | -------------- | ------ |
+| Glue        | 1M objects/month | < 1000 files   | \$0.00 |
+| S3 Storage  | 5 GB             | \~100 MB       | \$0.00 |
+| S3 Requests | 20K GET, 2K PUT  | \~500 requests | \$0.00 |
 
-| Service     | Free Tier Limit  | Estimated Usage | Cost       |
-| ----------- | ---------------- | --------------- | ---------- |
-| AWS Glue    | 1M objects/month | \~1000 files    | \$0.00     |
-| S3 Storage  | 5GB              | \~100MB         | \$0.00     |
-| S3 Requests | 20K GET, 2K PUT  | \~500 requests  | \$0.00     |
-| **Total**   |                  |                 | **\$0.00** |
+It’s free under AWS Free Tier!
 
-**Scaling Beyond Free Tier:**
+---
 
-* AWS Glue: \$0.44/DPU-hour
-* S3 Storage: \$0.023/GB/month
-* Data Transfer: First 1GB free, then \$0.09/GB
+## 🛠️ Customize
 
-## 🔧 Customization
+* To add more categories, edit `categorize_file()` method
+* To add custom rules, update the `extract_*_insights()` methods
 
-**Adding New Categories:**
+---
 
-```python
-# Add in categorize_file method
-if any(word in filename_lower for word in ['legal', 'contract', 'agreement']):
-    return 'legal'
-```
+## 🔍 Debugging Tips
 
-**Custom Insights:**
-
-```python
-def extract_legal_insights(self, df):
-    """Extract legal document insights"""
-    insights = []
-    # Add logic here
-    return insights
-```
-
-**Alert Thresholds:**
-
-```python
-# Change from 50% to 30%
-if null_percentage > 30:
-    alerts.append({
-        'type': 'CRITICAL',
-        'message': f'Column {col_name} has {null_percentage:.1f}% missing values',
-        'severity': 'high'
-    })
-```
-
-## 🔍 Monitoring & Troubleshooting
-
-**Job Monitoring:**
-
-* AWS Glue Console: Job logs and metrics
-* CloudWatch: Alarms for job failures
-* S3 Events: Monitor uploads
-
-**Common Issues:**
-
-| Issue              | Cause              | Solution              |
-| ------------------ | ------------------ | --------------------- |
-| Job fails          | IAM permissions    | Check role S3 access  |
-| No files processed | Empty input bucket | Upload test files     |
-| Out of memory      | Large files        | Increase worker count |
-| Schema errors      | Mixed data types   | Add data validation   |
-
-**Debugging:**
+* Use Glue Logs (Job → Runs → Logs)
+* Enable debug logging:
 
 ```python
 import logging
 logging.basicConfig(level=logging.DEBUG)
 ```
 
-## 🔐 Security Best Practices
+Common Problems:
 
-**IAM:**
+| Issue               | Cause               | Fix                |
+| ------------------- | ------------------- | ------------------ |
+| Job fails instantly | IAM Role missing S3 | Add S3 permissions |
+| Empty results       | No files in input   | Upload files       |
+| Out of memory       | Large files         | Use more workers   |
 
-* Least privilege principle
-* Rotate access keys
-* Enable MFA
+---
 
-**S3:**
+## 🔐 Security Tips
 
-* Enable bucket versioning
-* Use encryption
-* Setup access policies
+* Enable MFA, encryption, and bucket policies
+* Don't store sensitive data in plain text
 
-**Data Protection:**
+---
 
-* Avoid storing sensitive data in plaintext
-* Use encryption at rest
-* Enable CloudTrail for logs
+## 📈 Boost Performance
 
-## 📊 Performance Optimization
-
-**For Large Files (>100MB)**
+* For large files:
 
 ```python
 df.repartition(10)
-df.write.mode('overwrite').parquet(output_path)
+df.write.parquet(output_path)
 ```
 
-**For High Volume Processing**
+* For many files:
 
 ```python
 spark.conf.set("spark.sql.adaptive.enabled", "true")
-spark.conf.set("spark.sql.adaptive.coalescePartitions.enabled", "true")
 ```
+
+---
+
+Happy Processing! 🎉
