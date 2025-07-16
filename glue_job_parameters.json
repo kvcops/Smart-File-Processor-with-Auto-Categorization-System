@@ -1,0 +1,18 @@
+
+{
+  "job_name": "smart-file-processor",
+  "role": "SmartProcessorRole",
+  "script_location": "s3://your-scripts-bucket/data_quality_monitor.py",
+  "max_capacity": 2,
+  "max_retries": 0,
+  "timeout": 60,
+  "glue_version": "4.0",
+  "python_version": "3",
+  "worker_type": "G.1X",
+  "number_of_workers": 2,
+  "default_arguments": {
+    "--enable-metrics": "",
+    "--enable-continuous-cloudwatch-log": "true",
+    "--job-language": "python"
+  }
+}
