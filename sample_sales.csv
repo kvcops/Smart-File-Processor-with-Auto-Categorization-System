@@ -1,0 +1,6 @@
+order_id,customer_id,product_sku,quantity,unit_price,total_amount,order_date,sales_rep
+ORD001,CUST001,SKU001,2,29.99,59.98,2024-01-15,John Sales
+ORD002,CUST002,SKU002,1,45.00,45.00,2024-01-16,Jane Sales
+ORD003,CUST003,SKU003,5,19.99,99.95,2024-01-17,Bob Sales
+ORD004,CUST004,SKU001,3,29.99,89.97,2024-01-18,Alice Sales
+ORD005,CUST005,SKU004,1,35.50,35.50,2024-01-19,Charlie Sales
