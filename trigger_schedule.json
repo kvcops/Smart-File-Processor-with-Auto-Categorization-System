@@ -1,0 +1,12 @@
+{
+  "trigger_name": "daily-file-processor",
+  "type": "SCHEDULED",
+  "schedule": "cron(0 2 * * ? *)",
+  "description": "Daily trigger for smart file processor at 2 AM UTC",
+  "actions": [
+    {
+      "job_name": "smart-file-processor",
+      "timeout": 60
+    }
+  ]
+}
