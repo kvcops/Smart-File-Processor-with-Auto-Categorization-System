@@ -1,0 +1,6 @@
+customer_id,name,email,city,state,country,phone,signup_date
+CUST001,John Smith,john@email.com,New York,NY,USA,+1-555-0101,2023-06-15
+CUST002,Jane Doe,jane@company.com,Los Angeles,CA,USA,+1-555-0102,2023-07-20
+CUST003,Bob Johnson,bob@business.org,Chicago,IL,USA,+1-555-0103,2023-08-10
+CUST004,Alice Brown,alice@startup.net,Austin,TX,USA,+1-555-0104,2023-09-05
+CUST005,Charlie Wilson,charlie@tech.io,Seattle,WA,USA,+1-555-0105,2023-10-12
